@@ -5,10 +5,10 @@
 
 // You apply inline styles to JSX elements similar to how you do it in HTML, but with a few JSX differences. Here's an example of an inline style in HTML:
 
-// <div style="color: yellow; font-size: 16px">Mellow Yellow</div>
+{/* <div style="color: yellow; font-size: 16px">Mellow Yellow</div> */}
 // JSX elements use the style attribute, but because of the way JSX is transpiled, you can't set the value to a string. Instead, you set it equal to a JavaScript object. Here's an example:
 
-// <div style={{color: "yellow", fontSize: 16}}>Mellow Yellow</div>
+<div style={{color: "yellow", fontSize: 16}}>Mellow Yellow</div>
 // Notice how we camelCase the fontSize property? This is because React will not accept kebab-case keys in the style object. React will apply the correct property name for us in the HTML.
 
 // Add a style attribute to the div in the code editor to give the text a color of red and font size of 72px.
@@ -18,7 +18,7 @@
 class Colorful extends React.Component {
     render() {
       return (
-        <div>Big Red</div>
+        <div style={{color: 'red', fontSize: 72}}>Big Red</div>
       );
     }
   };
@@ -30,12 +30,18 @@ class Colorful extends React.Component {
   
 //   If you have a large set of styles, you can assign a style object to a constant to keep your code organized. Declare your styles constant as a global variable at the top of the file. Initialize styles constant and assign an object with three style properties and their values to it. Give the div a color of purple, a font-size of 40, and a border of 2px solid purple. Then set the style attribute equal to the styles constant.
 
+const styles = {
+  color: 'purple',
+  fontSize: 40,
+  border: "2px solid purple"
+}
+
 // Change code above this line
 class Colorful extends React.Component {
     render() {
       // Change code below this line
       return (
-        <div style={{color: "yellow", fontSize: 24}}>Style Me!</div>
+        <div style={styles}>Style Me!</div>
       );
       // Change code above this line
     }
@@ -100,7 +106,7 @@ const inputStyle = {
         'Outlook not so good',
         'Very doubtful'
       ];
-      const answer = 'change me!'; // Change this line
+      const answer = passibleAnswers[this.state.randomIndex]; // Change this line
       return (
         <div>
           <input
@@ -115,7 +121,7 @@ const inputStyle = {
           <h3>Answer:</h3>
           <p>
             {/* Change code below this line */}
-  
+            {answer}
             {/* Change code above this line */}
           </p>
         </div>
@@ -146,13 +152,20 @@ class MyComponent extends React.Component {
     }
     render() {
       // Change code below this line
-  
+      if(this.state.display){
       return (
          <div>
            <button onClick={this.toggleDisplay}>Toggle Display</button>
            <h1>Displayed!</h1>
          </div>
       );
+    } else {
+      return (
+        <div>
+          <button onClick={this.toggleDisplay}>Toggle Display</button>
+        </div>
+      )
+    }
     }
   };
 
@@ -183,7 +196,7 @@ class MyComponent extends React.Component {
       return (
          <div>
            <button onClick={this.toggleDisplay}>Toggle Display</button>
-           <h1>Displayed!</h1>
+           {this.state.display && <h1>Displayed!</h1>}
          </div>
       );
     }
@@ -207,7 +220,10 @@ const inputStyle = {
     constructor(props) {
       super(props);
       // Change code below this line
-  
+      this.state = {
+        userAge: '',
+        input: ''
+      }
       // Change code above this line
       this.submit = this.submit.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -238,7 +254,9 @@ const inputStyle = {
           />
           <br />
           {/* Change code below this line */}
-  
+          {
+            this.state.userAge === '' ? buttonOne : this.state.userAge >= 18 ? buttonTwo : buttonThree
+          }
           {/* Change code above this line */}
         </div>
       );
@@ -263,7 +281,7 @@ class Results extends React.Component {
     }
     render() {
       {/* Change code below this line */}
-      return <h1></h1>;
+      return <h1>{this.props.fiftyFifty ? "You Win!" : "You Lose!"}</h1>;
       {/* Change code above this line */}
     }
   }
@@ -277,20 +295,17 @@ class Results extends React.Component {
       this.handleClick = this.handleClick.bind(this);
     }
     handleClick() {
-      this.setState(prevState => {
-        // Complete the return statement:
-        return {
-          counter: prevState
-        }
+      this.setState({
+        counter: this.state.counter + 1
       });
     }
     render() {
-      const expression = null; // Change this line
+      const expression = Math.random() >= 0.5 ? true : false; // Change this line
       return (
         <div>
           <button onClick={this.handleClick}>Play Again</button>
           {/* Change code below this line */}
-  
+          <Results fiftyFifty={expression} />
           {/* Change code above this line */}
           <p>{'Turn: ' + this.state.counter}</p>
         </div>
@@ -322,7 +337,9 @@ class GateKeeper extends React.Component {
         border: '1px solid black'
       };
       // Change code below this line
-  
+      if(this.state.input.length > 15) {
+        inputStyle.border = '3px solid red'
+      }
       // Change code above this line
       return (
         <div>
@@ -345,7 +362,7 @@ class GateKeeper extends React.Component {
 
 // The code editor has most of the MyToDoList component set up. Some of this code should look familiar if you completed the controlled form challenge. You'll notice a textarea and a button, along with a couple of methods that track their states, but nothing is rendered to the page yet.
 
-// Inside the constructor, create a this.state object and define two states: userInput should be initialized as an empty string, and toDoList should be initialized as an empty array. Next, delete the null value in the render() method next to the items variable. In its place, map over the toDoList array stored in the component's internal state and dynamically render a li for each item. Try entering the string eat, code, sleep, repeat into the textarea, then click the button and see what happens.
+// Inside the constructor, create a this.state object and define two states: userInput should be initialized as an empty string, and toDoList should be initialized as an empty array. Next, delete the null value in the render() method next to the items variable. In its place, map over the toDoList array stored in the component's internal state and dynamically render an li for each item. Try entering the string eat, code, sleep, repeat into the textarea, then click the button and see what happens.
 
 // Note: You may know that all sibling child elements created by a mapping operation like this do need to be supplied with a unique key attribute. Don't worry, this is the topic of the next challenge.
 
@@ -358,7 +375,10 @@ const textAreaStyles = {
     constructor(props) {
       super(props);
       // Change code below this line
-  
+      this.state = {
+        userInput: '',
+        toDoList: []
+      }
       // Change code above this line
       this.handleSubmit = this.handleSubmit.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -375,7 +395,7 @@ const textAreaStyles = {
       });
     }
     render() {
-      const items = null; // Change this line
+      const items = this.state.toDoList.map(i => <li>{i}</li>); // Change this line
       return (
         <div>
           <textarea
@@ -414,7 +434,7 @@ const frontEndFrameworks = [
   ];
   
   function Frameworks() {
-    const renderFrameworks = null; // Change this line
+    const renderFrameworks = frontEndFrameworks.map((item) => <li key={item}>{item}</li>); // Change this line
     return (
       <div>
         <h1>Popular Front End JavaScript Frameworks</h1>
@@ -430,7 +450,7 @@ const frontEndFrameworks = [
 // The map array method is a powerful tool that you will use often when working with React. Another method related to map is filter, which filters the contents of an array based on a condition, then returns a new array. For example, if you have an array of users that all have a property online which can be set to true or false, you can filter only those users that are online by writing:
 
 // let onlineUsers = users.filter(user => user.online);
-// In the code editor, MyComponent's state is initialized with an array of users. Some users are online and some aren't. Filter the array so you see only the users who are online. To do this, first use filter to return a new array containing only the users whose online property is true. Then, in the renderOnline variable, map over the filtered array, and return a li element for each user that contains the text of their username. Be sure to include a unique key as well, like in the last challenges.
+// In the code editor, MyComponent's state is initialized with an array of users. Some users are online and some aren't. Filter the array so you see only the users who are online. To do this, first use filter to return a new array containing only the users whose online property is true. Then, in the renderOnline variable, map over the filtered array, and return an li element for each user that contains the text of their username. Be sure to include a unique key as well, like in the last challenges.
 
 class MyComponent extends React.Component {
     constructor(props) {
@@ -465,8 +485,8 @@ class MyComponent extends React.Component {
       };
     }
     render() {
-      const usersOnline = null; // Change this line
-      const renderOnline = null; // Change this line
+      const usersOnline = this.state.users.filter(user => user.online === true); // Change this line
+      const renderOnline = usersOnline.map(user => <li key={user.username}>{user.username}</li>); // Change this line
       return (
         <div>
           <h1>Current Online Users:</h1>
@@ -494,7 +514,7 @@ class App extends React.Component {
   };
   
   // Change code below this line
-
+  ReactDOMServer.renderToString(<App />);
   
 
 
